@@ -33,6 +33,5 @@ public class AddTask extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),  "submitted!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }
