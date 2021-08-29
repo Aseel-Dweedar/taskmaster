@@ -6,30 +6,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class AddTask extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_add_task);
 
-        Button allTaskButton = findViewById(R.id.allTask);
-        Button addTaskButton = findViewById(R.id.addTask);
 
-        allTaskButton.setOnClickListener(new View.OnClickListener() {
+        Button homeButton = findViewById(R.id.homeAddTask);
+        Button addTaskButton = findViewById(R.id.buttonAddTask);
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Intent goToAllTasks = new Intent(MainActivity.this, AllTasks.class);
-                startActivity(goToAllTasks);
+                Intent goToHome = new Intent(AddTask.this, MainActivity.class);
+                startActivity(goToHome);
             }
         });
 
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
-                Intent goToAllTasks = new Intent(MainActivity.this, AddTask.class);
-                startActivity(goToAllTasks);
+                Toast.makeText(getApplicationContext(),  "submitted!", Toast.LENGTH_SHORT).show();
             }
         });
 
