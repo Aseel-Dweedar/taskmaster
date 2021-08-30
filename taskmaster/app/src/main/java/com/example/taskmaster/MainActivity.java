@@ -3,9 +3,13 @@ package com.example.taskmaster;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,17 +38,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button goSettingButton = findViewById(R.id.settingsButton);
+        goSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+                Intent goSetting = new Intent(MainActivity.this, Settings.class);
+                startActivity(goSetting);
+            }
+        });
+
+
+        Button labButton = findViewById(R.id.labButton);
+        labButton.setOnClickListener((view -> {
+            String taskTitle = labButton.getText().toString();
+            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
+            goToTaskDetail.putExtra("taskName", taskTitle);
+            startActivity(goToTaskDetail);
+        }));
+
+        Button codeButton = findViewById(R.id.codeButton);
+        codeButton.setOnClickListener((view -> {
+            String taskTitle = codeButton.getText().toString();
+            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
+            goToTaskDetail.putExtra("taskName", taskTitle);
+            startActivity(goToTaskDetail);
+        }));
+
+        Button readButton = findViewById(R.id.readButton);
+        readButton.setOnClickListener((view -> {
+            String taskTitle = readButton.getText().toString();
+            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
+            goToTaskDetail.putExtra("taskName", taskTitle);
+            startActivity(goToTaskDetail);
+        }));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String usernameTasks = "’s tasks";
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String username = sharedPreferences.getString("username", "Your");
+        TextView userTasks = findViewById(R.id.myTask);
+        userTasks.setText(username+usernameTasks);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Toast.makeText(getApplicationContext(), "Override onStart()", Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "Override onResume()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
