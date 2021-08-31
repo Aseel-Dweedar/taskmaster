@@ -4,11 +4,13 @@
 
 **Homepage**
 
-The main page have a heading at the top of the page, an image to mock the “my tasks” view, and buttons at the bottom of the page to allow going to the “add tasks” and “all tasks” page.
+The main page have a heading at the top of the page,buttons at the bottom of the page to allow going to the “add tasks” and “all tasks” page.
 
 contain three different buttons with hardcoded task titles. When a user taps one of the titles, it goes to the Task Detail page, and the title at the top of the page match the task title that was tapped on the previous page.
 
 The homepage also contain a button to visit the Settings page, and once the user has entered their username, it displays “{username}’s tasks” above the three task buttons.
+
+Refactor homepage to use a RecyclerView for displaying Task data. This have hardcoded Task data for now.
 
 ![Home-Page](./screenshots/home-page.jpg)
 
