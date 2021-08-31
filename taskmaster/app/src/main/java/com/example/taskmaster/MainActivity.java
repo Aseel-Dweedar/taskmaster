@@ -1,6 +1,8 @@
 package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +14,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayList<Task> tasksList = new ArrayList<Task>();
+        tasksList.add(new Task("Lab" , "This is the Lab" , "assigned"));
+        tasksList.add(new Task("Code Challenge" , "This is the Code Challenge" , "complete"));
+        tasksList.add(new Task("Reading" , "This is the Reading" , "new"));
+
+        RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
+        tasksListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        tasksListRecyclerView.setAdapter(new TaskAdapter(tasksList));
 
         Button allTaskButton = findViewById(R.id.allTask);
         Button addTaskButton = findViewById(R.id.addTask);
@@ -77,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         String usernameTasks = "’s tasks";
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         String username = sharedPreferences.getString("username", "Your");
