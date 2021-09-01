@@ -30,9 +30,6 @@ public class TaskDetail extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-//        String taskName = intent.getExtras().getString("taskName");
-//        String taskBody = intent.getExtras().getString("taskBody");
-//        String taskState = intent.getExtras().getString("taskState");
         TextView title = findViewById(R.id.taskTitleDetail);
         TextView body = findViewById(R.id.taskBodyDetail);
         TextView state = findViewById(R.id.taskStateDetail);
