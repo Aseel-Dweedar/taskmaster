@@ -1,5 +1,6 @@
 package com.example.taskmaster;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,29 +10,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder>{
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    ArrayList<Task> tasksList = new ArrayList<Task>();
+    List<Task> tasksList = new ArrayList<Task>();
 
-    public TaskAdapter(ArrayList<Task> tasksList) {
+    public TaskAdapter(List<Task> tasksList) {
         this.tasksList = tasksList;
     }
 
-    public static class TaskViewHolder extends RecyclerView.ViewHolder{
+    public static class TaskViewHolder extends RecyclerView.ViewHolder {
         public Task task;
         View itemView;
 
-        public TaskViewHolder (@NonNull View itemView){
+        public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
+
+            itemView.setOnClickListener((view -> {
+                Intent goToTaskDetail = new Intent(view.getContext(), TaskDetail.class);
+                goToTaskDetail.putExtra("taskName", task.title);
+                goToTaskDetail.putExtra("taskBody", task.body);
+                goToTaskDetail.putExtra("taskState", task.state);
+                view.getContext().startActivity(goToTaskDetail);
+            }));
         }
     }
 
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_task,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_task, parent, false);
         TaskViewHolder taskViewHolder = new TaskViewHolder(view);
         return taskViewHolder;
     }
