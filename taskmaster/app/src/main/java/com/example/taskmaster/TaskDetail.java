@@ -17,7 +17,6 @@ public class TaskDetail extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
 
         Button goHomeButtonDetail = findViewById(R.id.homeButtonDetail);
-
         goHomeButtonDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
@@ -25,16 +24,17 @@ public class TaskDetail extends AppCompatActivity {
                 startActivity(goHomeTasks);
             }
         });
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        String taskName = intent.getExtras().getString("taskName");
-        TextView taskTitle = findViewById(R.id.taskTitleDetail);
-        taskTitle.setText(taskName);
+        TextView title = findViewById(R.id.taskTitleDetail);
+        TextView body = findViewById(R.id.taskBodyDetail);
+        TextView state = findViewById(R.id.taskStateDetail);
+        title.setText(intent.getExtras().getString("taskName"));
+        body.setText(intent.getExtras().getString("taskBody"));
+        state.setText(intent.getExtras().getString("taskState"));
     }
 }
