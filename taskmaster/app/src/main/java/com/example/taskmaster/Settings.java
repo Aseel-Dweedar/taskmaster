@@ -35,6 +35,8 @@ public class Settings extends AppCompatActivity {
             String username = usernameInput.getText().toString();
             sharedPreferencesEditor.putString("username",username);
             sharedPreferencesEditor.apply();
+            Intent goHomeSetting = new Intent(Settings.this, MainActivity.class);
+            startActivity(goHomeSetting);
         }));
     }
 }
