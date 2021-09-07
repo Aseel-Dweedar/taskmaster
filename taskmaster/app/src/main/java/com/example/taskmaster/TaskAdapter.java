@@ -9,19 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.TaskTodo;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    List<Task> tasksList = new ArrayList<Task>();
+    List<TaskTodo> tasksList = new ArrayList<TaskTodo>();
 
-    public TaskAdapter(List<Task> tasksList) {
+    public TaskAdapter(List<TaskTodo> tasksList) {
         this.tasksList = tasksList;
     }
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-        public Task task;
+        public TaskTodo task;
         View itemView;
 
         public TaskViewHolder(@NonNull View itemView) {
@@ -30,9 +32,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             itemView.setOnClickListener((view -> {
                 Intent goToTaskDetail = new Intent(view.getContext(), TaskDetail.class);
-                goToTaskDetail.putExtra("taskName", task.title);
-                goToTaskDetail.putExtra("taskBody", task.body);
-                goToTaskDetail.putExtra("taskState", task.state);
+                goToTaskDetail.putExtra("taskName", task.getTitle());
+                goToTaskDetail.putExtra("taskBody", task.getBody());
+                goToTaskDetail.putExtra("taskState", task.getState());
                 view.getContext().startActivity(goToTaskDetail);
             }));
         }
@@ -53,9 +55,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         TextView body = holder.itemView.findViewById(R.id.bodyInFrag);
         TextView state = holder.itemView.findViewById(R.id.stateInFrag);
 
-        title.setText(holder.task.title);
-        body.setText(holder.task.body);
-        state.setText(holder.task.state);
+        title.setText(holder.task.getTitle());
+        body.setText(holder.task.getBody());
+        state.setText(holder.task.getState());
     }
 
     @Override
