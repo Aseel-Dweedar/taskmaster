@@ -1,0 +1,40 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateTaskTodo(
+  $input: CreateTaskTodoInput!
+  $condition: ModelTaskTodoConditionInput
+) {
+  createTaskTodo(input: $input, condition: $condition) {
+    id
+    title
+    body
+    state
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTaskTodo(
+  $input: UpdateTaskTodoInput!
+  $condition: ModelTaskTodoConditionInput
+) {
+  updateTaskTodo(input: $input, condition: $condition) {
+    id
+    title
+    body
+    state
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTaskTodo(
+  $input: DeleteTaskTodoInput!
+  $condition: ModelTaskTodoConditionInput
+) {
+  deleteTaskTodo(input: $input, condition: $condition) {
+    id
+    title
+    body
+    state
+    createdAt
+    updatedAt
+  }
+}

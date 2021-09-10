@@ -16,7 +16,7 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.TaskTodo;
 
 public class AddTask extends AppCompatActivity {
-//    AppDatabase appDatabase;
+    //    AppDatabase appDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

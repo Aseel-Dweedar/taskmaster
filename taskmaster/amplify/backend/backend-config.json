@@ -1,6 +1,6 @@
 {
   "api": {
-    "taskmaster2": {
+    "mastertask": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -8,8 +8,8 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 100,
-              "description": "api for taskmaster2"
+              "apiKeyExpirationDays": 365,
+              "description": "mastertask api key"
             }
           },
           "additionalAuthenticationProviders": []
