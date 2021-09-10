@@ -48,11 +48,4 @@ public class MainActivityTest {
         closeSoftKeyboard();
         onView(withId(R.id.buttonAddTask)).perform(click());
     }
-
-    @Test
-    public void testGoToDetails() {
-        onView(withId(R.id.taskRecyclerView)).check(matches(isDisplayed()));
-        onView(withId(R.id.viewId)).check(matches(isDisplayed())).perform(click());
-        onView(withId(R.id.homeButtonDetail)).perform(click());
-    }
 }
