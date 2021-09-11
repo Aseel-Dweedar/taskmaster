@@ -3,4 +3,11 @@ type TaskTodo @model {
   title: String!
   body: String
   state: String
+  taskTeam: Team @connection(name: "teamTask")
+}
+
+type Team @model {
+  id: ID!
+  name: String!
+  taskTodo: [TaskTodo] @connection(name: "teamTask")
 }

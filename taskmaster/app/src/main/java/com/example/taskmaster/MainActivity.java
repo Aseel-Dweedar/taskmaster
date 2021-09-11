@@ -22,9 +22,11 @@ import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.TaskTodo;
+import com.amplifyframework.datastore.generated.model.Team;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -37,42 +39,62 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         try {
-            // Add these lines to add the AWSApiPlugin plugins
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());
-
             Log.i("MyAmplifyApp", "Initialized Amplify");
         } catch (AmplifyException error) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String teamId = sharedPreferences.getString("teamId", "");
+
+//        Team team1 = Team.builder().name("team1").build();
+//        Team team2 = Team.builder().name("team2").build();
+//        Team team3 = Team.builder().name("team3").build();
+//
+//        Amplify.API.mutate(
+//                ModelMutation.create(team1),
+//                response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
+//                error -> Log.e("MyAmplifyApp", "Create failed", error)
+//        );
+//        Amplify.API.mutate(
+//                ModelMutation.create(team2),
+//                response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
+//                error -> Log.e("MyAmplifyApp", "Create failed", error)
+//        );
+//        Amplify.API.mutate(
+//                ModelMutation.create(team3),
+//                response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
+//                error -> Log.e("MyAmplifyApp", "Create failed", error)
+//        );
+
 
 //        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
 
-        RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
-
-        Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull Message message) {
-                tasksListRecyclerView.getAdapter().notifyDataSetChanged();
-                return false;
-            }
-        });
-
-        List<TaskTodo> tasksList = new ArrayList<TaskTodo>();
-        Amplify.API.query(
-                ModelQuery.list(com.amplifyframework.datastore.generated.model.TaskTodo.class),
-                response -> {
-                    for (TaskTodo taskTodo : response.getData()) {
-                        tasksList.add(taskTodo);
-                    }
-                    handler.sendEmptyMessage(1);
-                },
-                error -> Log.e("MyAmplifyApp", error.toString(), error)
-        );
-        tasksListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tasksListRecyclerView.setAdapter(new TaskAdapter(tasksList));
+        if (!teamId.equals("")){
+            RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
+            Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message message) {
+                    tasksListRecyclerView.getAdapter().notifyDataSetChanged();
+                    return false;
+                }
+            });
+            List<TaskTodo> tasksList = new ArrayList<TaskTodo>();
+            Amplify.API.query(
+                    ModelQuery.get(Team.class, teamId),
+                    response -> {
+                        for (TaskTodo taskTodo : response.getData().getTaskTodo()) {
+                            tasksList.add(taskTodo);
+                        }
+                        handler.sendEmptyMessage(1);
+                    },
+                    error -> Log.e("MyAmplifyApp", error.toString(), error)
+            );
+            tasksListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            tasksListRecyclerView.setAdapter(new TaskAdapter(tasksList));
+        }
 
 
         Button addTaskButton = findViewById(R.id.addTask);
@@ -137,6 +159,10 @@ public class MainActivity extends AppCompatActivity {
         String username = sharedPreferences.getString("username", "Your");
         TextView userTasks = findViewById(R.id.myTask);
         userTasks.setText(username + usernameTasks);
+
+        String chooseTeamName = sharedPreferences.getString("teamName", "team1");
+        TextView teamName = findViewById(R.id.teamName);
+        teamName.setText(chooseTeamName);
     }
 
 //    @Override

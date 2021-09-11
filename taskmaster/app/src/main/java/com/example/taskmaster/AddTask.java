@@ -9,11 +9,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.TaskTodo;
+import com.amplifyframework.datastore.generated.model.Team;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AddTask extends AppCompatActivity {
     //    AppDatabase appDatabase;
@@ -27,20 +39,52 @@ public class AddTask extends AppCompatActivity {
         EditText body = findViewById(R.id.editTextDescription);
         EditText state = findViewById(R.id.editTextTaskState);
 
+        try {
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
+            Log.i("MyAmplifyApp", "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
+        }
+
+        Map< String,String> teamsList = new HashMap<>();
+        Amplify.API.query(
+                ModelQuery.list(com.amplifyframework.datastore.generated.model.Team.class),
+                response -> {
+                    for (Team oneTeam : response.getData()) {
+                        teamsList.put(oneTeam.getName(), oneTeam.getId());
+                    }
+                },
+                error -> Log.e("MyAmplifyApp", error.toString(), error)
+        );
+
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
 
-                TaskTodo todo = TaskTodo.builder()
-                        .title(title.getText().toString())
-                        .body(body.getText().toString())
-                        .state(state.getText().toString())
-                        .build();
+                RadioGroup radioGroup = findViewById(R.id.radioGroup);
+                int chosenButtonId = radioGroup.getCheckedRadioButtonId();
+                RadioButton chosenButton = findViewById(chosenButtonId);
+                String chosenTeam = chosenButton.getText().toString();
 
-                Amplify.API.mutate(
-                        ModelMutation.create(todo),
-                        response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
-                        error -> Log.e("MyAmplifyApp", "Create failed", error)
+                Amplify.API.query(
+                        ModelQuery.get(Team.class, teamsList.get(chosenTeam)),
+                        response -> {
+                            Log.i("MyAmplifyApp", ((Team) response.getData()).getName());
+
+                            TaskTodo todo = TaskTodo.builder()
+                                    .title(title.getText().toString())
+                                    .body(body.getText().toString())
+                                    .state(state.getText().toString()).taskTeam((Team) response.getData())
+                                    .build();
+
+                            Amplify.API.mutate(
+                                    ModelMutation.create(todo),
+                                    response2 -> Log.i("MyAmplifyApp", "Added Todo with id: " + response2.getData().getId()),
+                                    error -> Log.e("MyAmplifyApp", "Create failed", error)
+                            );
+                        },
+                        error -> Log.e("MyAmplifyApp", error.toString(), error)
                 );
 
                 Toast.makeText(getApplicationContext(), "submitted!", Toast.LENGTH_SHORT).show();
