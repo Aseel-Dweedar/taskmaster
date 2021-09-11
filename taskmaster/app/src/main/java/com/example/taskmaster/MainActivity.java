@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
 
-        if (!teamId.equals("")){
+        if (!teamId.equals("")) {
             RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
             Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
                 @Override
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         TextView userTasks = findViewById(R.id.myTask);
         userTasks.setText(username + usernameTasks);
 
-        String chooseTeamName = sharedPreferences.getString("teamName", "team1");
+        String chooseTeamName = sharedPreferences.getString("teamName", "Choose a team");
         TextView teamName = findViewById(R.id.teamName);
         teamName.setText(chooseTeamName);
     }

@@ -108,7 +108,7 @@
         android:id="@+id/teamName"
         android:layout_width="111dp"
         android:layout_height="35dp"
-        android:text="Choose your team"
+        android:text="Choose a team"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.803"
