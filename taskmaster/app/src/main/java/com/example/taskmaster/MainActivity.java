@@ -20,10 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.cognitoauth.Auth;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.TaskTodo;
 import com.amplifyframework.datastore.generated.model.Team;
@@ -41,13 +44,25 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
         } catch (AmplifyException error) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        String teamId = sharedPreferences.getString("teamId", "");
+
+        Amplify.Auth.fetchAuthSession(
+                result -> Log.i("AmplifyQuickstart", result.toString()),
+                error -> Log.e("AmplifyQuickstart", error.toString())
+        );
+
+
+        Amplify.Auth.signInWithWebUI(
+                this,
+                result -> Log.i("AuthQuickStart", result.toString()),
+                error -> Log.e("AuthQuickStart", error.toString())
+        );
+
 
 //        Team team1 = Team.builder().name("team1").build();
 //        Team team2 = Team.builder().name("team2").build();
@@ -71,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String teamId = sharedPreferences.getString("teamId", "");
 
         if (!teamId.equals("")) {
             RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
@@ -97,6 +115,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+//        if (Amplify.Auth.getCurrentUser() != null){
+//            AuthUser authUser = Amplify.Auth.getCurrentUser();
+//            TextView currentUser = findViewById(R.id.currentUser);
+//            if (authUser != null) currentUser.setText(authUser.getUsername());
+//        } else {
+//            final Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    AuthUser authUser = Amplify.Auth.getCurrentUser();
+//                    TextView currentUser = findViewById(R.id.currentUser);
+//                    if (authUser != null) currentUser.setText(authUser.getUsername());
+//
+//                }
+//            }, 3000);
+//        }
+
+
         Button addTaskButton = findViewById(R.id.addTask);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,14 +151,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        Button allTaskButton = findViewById(R.id.allTask);
-//        allTaskButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View V) {
-//                Intent goToAllTasks = new Intent(MainActivity.this, AllTasks.class);
-//                startActivity(goToAllTasks);
-//            }
-//        });
+        Button signoutButton = findViewById(R.id.signoutButton);
+        signoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+
+
+                Amplify.Auth.signOut(
+                        () -> Log.i("AuthQuickstart", "Signed out successfully"),
+                        error -> Log.e("AuthQuickstart", error.toString())
+
+                );
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recreate();
+                    }
+                }, 3000);
+            }
+        });
 
 //        Button labButton = findViewById(R.id.labButton);
 //        labButton.setOnClickListener((view -> {
@@ -153,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         String usernameTasks = "’s tasks";
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         String username = sharedPreferences.getString("username", "Your");
@@ -163,6 +211,18 @@ public class MainActivity extends AppCompatActivity {
         String chooseTeamName = sharedPreferences.getString("teamName", "Choose a team");
         TextView teamName = findViewById(R.id.teamName);
         teamName.setText(chooseTeamName);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AuthUser authUser = Amplify.Auth.getCurrentUser();
+                TextView currentUser = findViewById(R.id.currentUser);
+                if (authUser != null) currentUser.setText(authUser.getUsername());
+
+            }
+        }, 3000);
+
     }
 
 //    @Override
