@@ -10,6 +10,11 @@
       "StackName": "amplify-mastertask-mastertask-205058",
       "StackId": "arn:aws:cloudformation:eu-central-1:287014330164:stack/amplify-mastertask-mastertask-205058/ae26e360-125f-11ec-b01e-06befb5b6a6c",
       "AmplifyAppId": "d2xkoejsa74n09"
+    },
+    "categories": {
+      "auth": {
+        "mastertaske3a76757": {}
+      }
     }
   }
 }

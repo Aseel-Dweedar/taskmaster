@@ -47,12 +47,12 @@ public class AddTask extends AppCompatActivity {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
 
-        Map< String,String> teamsList = new HashMap<>();
+        Map< String,Team> teamsList = new HashMap<>();
         Amplify.API.query(
                 ModelQuery.list(com.amplifyframework.datastore.generated.model.Team.class),
                 response -> {
                     for (Team oneTeam : response.getData()) {
-                        teamsList.put(oneTeam.getName(), oneTeam.getId());
+                        teamsList.put(oneTeam.getName(), oneTeam);
                     }
                 },
                 error -> Log.e("MyAmplifyApp", error.toString(), error)
@@ -67,24 +67,16 @@ public class AddTask extends AppCompatActivity {
                 RadioButton chosenButton = findViewById(chosenButtonId);
                 String chosenTeam = chosenButton.getText().toString();
 
-                Amplify.API.query(
-                        ModelQuery.get(Team.class, teamsList.get(chosenTeam)),
-                        response -> {
-                            Log.i("MyAmplifyApp", ((Team) response.getData()).getName());
+                TaskTodo todo = TaskTodo.builder()
+                        .title(title.getText().toString())
+                        .body(body.getText().toString())
+                        .state(state.getText().toString()).taskTeam((Team) teamsList.get(chosenTeam))
+                        .build();
 
-                            TaskTodo todo = TaskTodo.builder()
-                                    .title(title.getText().toString())
-                                    .body(body.getText().toString())
-                                    .state(state.getText().toString()).taskTeam((Team) response.getData())
-                                    .build();
-
-                            Amplify.API.mutate(
-                                    ModelMutation.create(todo),
-                                    response2 -> Log.i("MyAmplifyApp", "Added Todo with id: " + response2.getData().getId()),
-                                    error -> Log.e("MyAmplifyApp", "Create failed", error)
-                            );
-                        },
-                        error -> Log.e("MyAmplifyApp", error.toString(), error)
+                Amplify.API.mutate(
+                        ModelMutation.create(todo),
+                        response2 -> Log.i("MyAmplifyApp", "Added Todo with id: " + response2.getData().getId()),
+                        error -> Log.e("MyAmplifyApp", "Create failed", error)
                 );
 
                 Toast.makeText(getApplicationContext(), "submitted!", Toast.LENGTH_SHORT).show();
@@ -98,7 +90,7 @@ public class AddTask extends AppCompatActivity {
             }
         });
 
-        //        Button homeButton = findViewById(R.id.homeAddTask);
+//        Button homeButton = findViewById(R.id.homeAddTask);
 //        homeButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View V) {
