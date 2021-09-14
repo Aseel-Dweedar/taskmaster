@@ -25,11 +25,15 @@ also contain a button to visit the Settings page, and once the user has entered 
 On the “Add a Task” page, allow users to type in details about a new task, specifically a title, state and a body.
 and choose their team. When users click the “submit” button, task saved to DynamoDB.
 
+users optionally can select a file to attach to that task. If a user attaches a file to a task, that file uploaded to S3, and associated with that task.
+
 ![Add-task](./screenshots/add-task.PNG)
 
 **Task Detail Page**
 
 have a title the description and status of a tapped task are also displayed on the detail page. when the user click the task in the home page it redirect to this page.
+
+if there is a file that is an image associated with a particular Task, that image displayed within that activity.
 
 ![Detail](./screenshots/details.PNG)
 

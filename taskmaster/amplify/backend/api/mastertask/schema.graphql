@@ -3,6 +3,7 @@ type TaskTodo @model {
   title: String!
   body: String
   state: String
+  image: String
   taskTeam: Team @connection(name: "teamTask")
 }
 

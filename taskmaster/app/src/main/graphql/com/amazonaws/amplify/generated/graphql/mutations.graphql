@@ -8,6 +8,7 @@ mutation CreateTaskTodo(
     title
     body
     state
+    image
     taskTeam {
       id
       name
@@ -33,6 +34,7 @@ mutation UpdateTaskTodo(
     title
     body
     state
+    image
     taskTeam {
       id
       name
@@ -58,6 +60,7 @@ mutation DeleteTaskTodo(
     title
     body
     state
+    image
     taskTeam {
       id
       name
