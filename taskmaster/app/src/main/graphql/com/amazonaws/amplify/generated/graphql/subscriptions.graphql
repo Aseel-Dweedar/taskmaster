@@ -5,6 +5,7 @@ subscription OnCreateTaskTodo {
     title
     body
     state
+    image
     taskTeam {
       id
       name
@@ -27,6 +28,7 @@ subscription OnUpdateTaskTodo {
     title
     body
     state
+    image
     taskTeam {
       id
       name
@@ -49,6 +51,7 @@ subscription OnDeleteTaskTodo {
     title
     body
     state
+    image
     taskTeam {
       id
       name
