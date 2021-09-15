@@ -42,3 +42,9 @@ if there is a file that is an image associated with a particular Task, that imag
 allow users to enter their username and choose their team to display in the home page.
 
 ![Home-Page](./screenshots/settings.PNG)
+
+**Notifications**
+
+the ability for push notifications to be delivered to the app from the cloud.
+
+![Notifications](./screenshots/Notifications.PNG)
