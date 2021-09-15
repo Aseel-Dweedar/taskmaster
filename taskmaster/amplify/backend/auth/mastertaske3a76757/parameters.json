@@ -1,6 +1,6 @@
 {
     "identityPoolName": "mastertaske3a76757_identitypool_e3a76757",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "mastere3a76757",
     "userPoolName": "mastertaske3a76757_userpool_e3a76757",
     "autoVerifiedAttributes": [
