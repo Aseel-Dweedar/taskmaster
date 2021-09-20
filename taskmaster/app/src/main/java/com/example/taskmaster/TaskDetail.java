@@ -29,10 +29,11 @@ public class TaskDetail extends AppCompatActivity {
         TextView body = findViewById(R.id.taskBodyDetail);
         TextView state = findViewById(R.id.taskStateDetail);
         ImageView storeImg = findViewById(R.id.storeImg);
+        TextView location = findViewById(R.id.locationText);
         title.setText(intent.getExtras().getString("taskName"));
         body.setText(intent.getExtras().getString("taskBody"));
         state.setText(intent.getExtras().getString("taskState"));
-
+        location.setText(intent.getExtras().getString("taskLocation"));
 
         if (intent.getExtras().getString("taskImage") != null) {
             Amplify.Storage.downloadFile(

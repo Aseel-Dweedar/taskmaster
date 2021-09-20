@@ -34,6 +34,11 @@ query GetTaskTodo($id: ID!) {
     body
     state
     image
+    location {
+      name
+      longitude
+      latitude
+    }
     taskTeam {
       id
       name

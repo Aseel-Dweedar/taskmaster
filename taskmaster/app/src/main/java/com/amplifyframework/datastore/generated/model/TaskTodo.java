@@ -26,12 +26,14 @@ public final class TaskTodo implements Model {
   public static final QueryField BODY = field("TaskTodo", "body");
   public static final QueryField STATE = field("TaskTodo", "state");
   public static final QueryField IMAGE = field("TaskTodo", "image");
+  public static final QueryField LOCATION = field("TaskTodo", "location");
   public static final QueryField TASK_TEAM = field("TaskTodo", "taskTodoTaskTeamId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="String") String state;
   private final @ModelField(targetType="String") String image;
+  private final @ModelField(targetType="Location") Location location;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskTodoTaskTeamId", type = Team.class) Team taskTeam;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
@@ -55,6 +57,10 @@ public final class TaskTodo implements Model {
       return image;
   }
   
+  public Location getLocation() {
+      return location;
+  }
+  
   public Team getTaskTeam() {
       return taskTeam;
   }
@@ -67,12 +73,13 @@ public final class TaskTodo implements Model {
       return updatedAt;
   }
   
-  private TaskTodo(String id, String title, String body, String state, String image, Team taskTeam) {
+  private TaskTodo(String id, String title, String body, String state, String image, Location location, Team taskTeam) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.state = state;
     this.image = image;
+    this.location = location;
     this.taskTeam = taskTeam;
   }
   
@@ -89,6 +96,7 @@ public final class TaskTodo implements Model {
               ObjectsCompat.equals(getBody(), taskTodo.getBody()) &&
               ObjectsCompat.equals(getState(), taskTodo.getState()) &&
               ObjectsCompat.equals(getImage(), taskTodo.getImage()) &&
+              ObjectsCompat.equals(getLocation(), taskTodo.getLocation()) &&
               ObjectsCompat.equals(getTaskTeam(), taskTodo.getTaskTeam()) &&
               ObjectsCompat.equals(getCreatedAt(), taskTodo.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), taskTodo.getUpdatedAt());
@@ -103,6 +111,7 @@ public final class TaskTodo implements Model {
       .append(getBody())
       .append(getState())
       .append(getImage())
+      .append(getLocation())
       .append(getTaskTeam())
       .append(getCreatedAt())
       .append(getUpdatedAt())
@@ -119,6 +128,7 @@ public final class TaskTodo implements Model {
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("state=" + String.valueOf(getState()) + ", ")
       .append("image=" + String.valueOf(getImage()) + ", ")
+      .append("location=" + String.valueOf(getLocation()) + ", ")
       .append("taskTeam=" + String.valueOf(getTaskTeam()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -155,6 +165,7 @@ public final class TaskTodo implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -165,6 +176,7 @@ public final class TaskTodo implements Model {
       body,
       state,
       image,
+      location,
       taskTeam);
   }
   public interface TitleStep {
@@ -178,6 +190,7 @@ public final class TaskTodo implements Model {
     BuildStep body(String body);
     BuildStep state(String state);
     BuildStep image(String image);
+    BuildStep location(Location location);
     BuildStep taskTeam(Team taskTeam);
   }
   
@@ -188,6 +201,7 @@ public final class TaskTodo implements Model {
     private String body;
     private String state;
     private String image;
+    private Location location;
     private Team taskTeam;
     @Override
      public TaskTodo build() {
@@ -199,6 +213,7 @@ public final class TaskTodo implements Model {
           body,
           state,
           image,
+          location,
           taskTeam);
     }
     
@@ -228,6 +243,12 @@ public final class TaskTodo implements Model {
     }
     
     @Override
+     public BuildStep location(Location location) {
+        this.location = location;
+        return this;
+    }
+    
+    @Override
      public BuildStep taskTeam(Team taskTeam) {
         this.taskTeam = taskTeam;
         return this;
@@ -245,12 +266,13 @@ public final class TaskTodo implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String state, String image, Team taskTeam) {
+    private CopyOfBuilder(String id, String title, String body, String state, String image, Location location, Team taskTeam) {
       super.id(id);
       super.title(title)
         .body(body)
         .state(state)
         .image(image)
+        .location(location)
         .taskTeam(taskTeam);
     }
     
@@ -272,6 +294,11 @@ public final class TaskTodo implements Model {
     @Override
      public CopyOfBuilder image(String image) {
       return (CopyOfBuilder) super.image(image);
+    }
+    
+    @Override
+     public CopyOfBuilder location(Location location) {
+      return (CopyOfBuilder) super.location(location);
     }
     
     @Override
