@@ -9,6 +9,11 @@ mutation CreateTaskTodo(
     body
     state
     image
+    location {
+      name
+      longitude
+      latitude
+    }
     taskTeam {
       id
       name
@@ -35,6 +40,11 @@ mutation UpdateTaskTodo(
     body
     state
     image
+    location {
+      name
+      longitude
+      latitude
+    }
     taskTeam {
       id
       name
@@ -61,6 +71,11 @@ mutation DeleteTaskTodo(
     body
     state
     image
+    location {
+      name
+      longitude
+      latitude
+    }
     taskTeam {
       id
       name

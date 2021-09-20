@@ -32,6 +32,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
             itemView.setOnClickListener((view -> {
                 Intent goToTaskDetail = new Intent(view.getContext(), TaskDetail.class);
+                if (task.getLocation() != null) {
+                    goToTaskDetail.putExtra("taskLocation", task.getLocation().getName());
+                } else {
+                    goToTaskDetail.putExtra("taskLocation","");
+                }
                 goToTaskDetail.putExtra("taskName", task.getTitle());
                 goToTaskDetail.putExtra("taskBody", task.getBody());
                 goToTaskDetail.putExtra("taskState", task.getState());

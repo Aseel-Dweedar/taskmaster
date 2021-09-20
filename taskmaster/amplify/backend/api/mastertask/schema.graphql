@@ -4,6 +4,7 @@ type TaskTodo @model {
   body: String
   state: String
   image: String
+  location: Location
   taskTeam: Team @connection(name: "teamTask")
 }
 
@@ -11,4 +12,10 @@ type Team @model {
   id: ID!
   name: String!
   taskTodo: [TaskTodo] @connection(name: "teamTask")
+}
+
+type Location {
+    name: String
+    longitude: Float
+    latitude: Float
 }
